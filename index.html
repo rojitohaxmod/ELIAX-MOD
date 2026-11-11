@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROJITO MODZ - GitHub Downloads</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-base: #050508;
+            --panel-bg: rgba(13, 14, 22, 0.85);
+            --red-glow: #ff003c;
+            --red-dim: rgba(255, 0, 60, 0.2);
+            --red-border: rgba(255, 0, 60, 0.4);
+            --text-main: #e2e8f0;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rajdhani', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(255, 0, 60, 0.12) 0%, transparent 60%),
+                linear-gradient(rgba(255, 0, 60, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        header {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--red-dim);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid var(--red-glow);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 12px var(--red-dim);
+            color: var(--red-glow);
+            font-size: 1.2rem;
+        }
+
+        .brand-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .brand-text .sub {
+            font-size: 0.75rem;
+            color: var(--red-glow);
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 10px;
+        }
+
+        .badge {
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid var(--red-border);
+            color: var(--red-glow);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: var(--red-glow);
+            color: #fff;
+            box-shadow: 0 0 10px var(--red-glow);
+        }
+
+        /* MAIN CARD */
+        main {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px 0;
+        }
+
+        .panel-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--red-border);
+            border-radius: 16px;
+            padding: 30px 20px;
+            box-shadow: 0 0 30px rgba(255, 0, 60, 0.15);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .lock-glow {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 0, 60, 0.15);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px auto;
+            border: 1px solid var(--red-glow);
+            box-shadow: 0 0 20px var(--red-dim);
+            color: var(--red-glow);
+            font-size: 1.5rem;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--red-dim);
+        }
+
+        .panel-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* DOWNLOAD LIST */
+        .downloads-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .download-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .download-item:hover {
+            border-color: var(--red-glow);
+            background: rgba(255, 0, 60, 0.05);
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.1);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .file-icon {
+            color: var(--red-glow);
+            font-size: 1.2rem;
+            min-width: 20px;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .file-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #ff003c, #b3002d);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 10px var(--red-dim);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 0 20px var(--red-glow);
+            transform: translateY(-1px);
+        }
+
+        .loading-state, .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .spinner {
+            color: var(--red-glow);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 15px 0;
+        }
+
+        footer span {
+            color: var(--red-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ENCABEZADO -->
+    <header>
+        <div class="brand">
+            <div class="icon-box">
+                <i class="fa-solid fa-crosshairs"></i>
+            </div>
+            <div class="brand-text">
+                <h1>ELIAX</h1>
+                <div class="sub">MOD V2</div>
+            </div>
+        </div>
+        <div class="header-badges">
+            <a href="https://github.com/rojitohaxmod/ELIAX-MOD" target="_blank" class="badge">
+                <i class="fa-brands fa-github"></i> GITHUB
+            </a>
+            <div class="badge" style="cursor: default;">
+                PING <span id="ping-val">18ms</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- PANEL CENTRAL CYBERPUNK -->
+    <main>
+        <div class="panel-card">
+            <div class="panel-header">
+                <div class="lock-glow">
+                    <i class="fa-solid fa-download"></i>
+                </div>
+                <h2 class="panel-title">ROJITO MODZ</h2>
+                <p class="panel-sub">Archivos del repositorio de GitHub</p>
+            </div>
+
+            <!-- CONTENEDOR DE ARCHIVOS DINÁMICOS -->
+            <div id="downloads-list" class="downloads-container">
+                <div class="loading-state">
+                    <i class="fa-solid fa-circle-notch spinner"></i>
+                    <p>Obteniendo archivos reales de GitHub...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        ROJITO MODZ © 2026 - GitHub Releases Auto Sync
+    </footer>
+
+    <script>
+        // CONFIGURACIÓN DIRECTA DE TU REPOSITORIO DE GITHUB
+        const GITHUB_USERNAME = "rojitohaxmod";
+        const GITHUB_REPO     = "ELIAX-MOD";
+
+        async function loadGithubFiles() {
+            const container = document.getElementById("downloads-list");
+            const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/releases/latest`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error("No se halló Release o el repositorio es privado");
+                
+                const data = await response.json();
+                const assets = data.assets;
+
+                if (!assets || assets.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: var(--red-glow); margin-bottom: 10px;"></i>
+                            <p>No hay archivos publicados en Releases aún.</p>
+                        </div>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+
+                assets.forEach(asset => {
+                    const sizeMB = (asset.size / (1024 * 1024)).toFixed(2);
+                    const fileItem = document.createElement("div");
+                    fileItem.className = "download-item";
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <i class="fa-solid fa-file-code file-icon"></i>
+                            <div class="file-details">
+                                <span class="file-name" title="${asset.name}">${asset.name}</span>
+                                <span class="file-meta">${sizeMB} MB • ${asset.download_count} descargas</span>
+                            </div>
+                        </div>
+                        <a href="${asset.browser_download_url}" class="btn-download" download>
+                            <i class="fa-solid fa-download"></i> OBTENER
+                        </a>
+                    `;
+                    container.appendChild(fileItem);
+                });
+
+            } catch (err) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.8rem; color: var(--red-glow); margin-bottom: 8px;"></i>
+                        <p style="color: #fff; font-weight: bold;">Sin Releases activas</p>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">Sube tus archivos en la sección <b>Releases</b> de tu GitHub para que aparezcan aquí automáticamente.</p>
+                    </div>`;
+            }
+        }
+
+        // Variación del Ping para efecto visual
+        setInterval(() => {
+            const pingEl = document.getElementById("ping-val");
+            if (pingEl) {
+                const ping = Math.floor(Math.random() * (24 - 15 + 1)) + 15;
+                pingEl.textContent = ping + "ms";
+            }
+        }, 3000);
+
+        loadGithubFiles();
+    </script>
+</body>
+</html>
