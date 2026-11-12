@@ -171,6 +171,21 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        /* Scrollbar personalizado */
+        .downloads-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .downloads-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .downloads-container::-webkit-scrollbar-thumb {
+            background: var(--red-border);
+            border-radius: 3px;
         }
 
         .download-item {
@@ -307,14 +322,14 @@
                     <i class="fa-solid fa-download"></i>
                 </div>
                 <h2 class="panel-title">ROJITO MODZ</h2>
-                <p class="panel-sub">Archivos del repositorio de GitHub</p>
+                <p class="panel-sub">Archivos de todas las versiones de GitHub</p>
             </div>
 
             <!-- CONTENEDOR DE ARCHIVOS DINÁMICOS -->
             <div id="downloads-list" class="downloads-container">
                 <div class="loading-state">
                     <i class="fa-solid fa-circle-notch spinner"></i>
-                    <p>Obteniendo archivos reales de GitHub...</p>
+                    <p>Obteniendo todas las versiones de GitHub...</p>
                 </div>
             </div>
         </div>
@@ -332,16 +347,16 @@
 
         async function loadGithubFiles() {
             const container = document.getElementById("downloads-list");
-            const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/releases/latest`;
+            // Cambiado de /releases/latest a /releases para obtener TODAS las versiones
+            const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/releases`;
 
             try {
                 const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error("No se halló Release o el repositorio es privado");
+                if (!response.ok) throw new Error("No se hallaron Releases o el repositorio es privado");
                 
-                const data = await response.json();
-                const assets = data.assets;
+                const releases = await response.json();
 
-                if (!assets || assets.length === 0) {
+                if (!releases || releases.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: var(--red-glow); margin-bottom: 10px;"></i>
@@ -351,25 +366,42 @@
                 }
 
                 container.innerHTML = "";
+                let totalAssetsFound = 0;
 
-                assets.forEach(asset => {
-                    const sizeMB = (asset.size / (1024 * 1024)).toFixed(2);
-                    const fileItem = document.createElement("div");
-                    fileItem.className = "download-item";
-                    fileItem.innerHTML = `
-                        <div class="file-info">
-                            <i class="fa-solid fa-file-code file-icon"></i>
-                            <div class="file-details">
-                                <span class="file-name" title="${asset.name}">${asset.name}</span>
-                                <span class="file-meta">${sizeMB} MB • ${asset.download_count} descargas</span>
-                            </div>
-                        </div>
-                        <a href="${asset.browser_download_url}" class="btn-download" download>
-                            <i class="fa-solid fa-download"></i> OBTENER
-                        </a>
-                    `;
-                    container.appendChild(fileItem);
+                // Recorremos cada release para extraer todos sus archivos adjuntos (assets)
+                releases.forEach(release => {
+                    const tagName = release.tag_name || "Versión";
+                    
+                    if (release.assets && release.assets.length > 0) {
+                        release.assets.forEach(asset => {
+                            totalAssetsFound++;
+                            const sizeMB = (asset.size / (1024 * 1024)).toFixed(2);
+                            const fileItem = document.createElement("div");
+                            fileItem.className = "download-item";
+                            fileItem.innerHTML = `
+                                <div class="file-info">
+                                    <i class="fa-solid fa-file-code file-icon"></i>
+                                    <div class="file-details">
+                                        <span class="file-name" title="${asset.name}">${asset.name}</span>
+                                        <span class="file-meta"><b style="color:var(--red-glow)">[${tagName}]</b> • ${sizeMB} MB • ${asset.download_count} descargas</span>
+                                    </div>
+                                </div>
+                                <a href="${asset.browser_download_url}" class="btn-download" download>
+                                    <i class="fa-solid fa-download"></i> OBTENER
+                                </a>
+                            `;
+                            container.appendChild(fileItem);
+                        });
+                    }
                 });
+
+                if (totalAssetsFound === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: var(--red-glow); margin-bottom: 10px;"></i>
+                            <p>Hay releases creadas, pero ningún archivo adjunto en ellas.</p>
+                        </div>`;
+                }
 
             } catch (err) {
                 container.innerHTML = `
