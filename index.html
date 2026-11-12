@@ -13,6 +13,9 @@
             --red-glow: #ff003c;
             --red-dim: rgba(255, 0, 60, 0.2);
             --red-border: rgba(255, 0, 60, 0.4);
+            --wa-green: #25D366;
+            --wa-dim: rgba(37, 211, 102, 0.15);
+            --wa-border: rgba(37, 211, 102, 0.4);
             --text-main: #e2e8f0;
             --text-muted: #64748b;
         }
@@ -176,7 +179,6 @@
             padding-right: 4px;
         }
 
-        /* Scrollbar personalizado */
         .downloads-container::-webkit-scrollbar {
             width: 6px;
         }
@@ -260,6 +262,44 @@
             transform: translateY(-1px);
         }
 
+        /* BOTÓN WHATSAPP */
+        .whatsapp-section {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-whatsapp {
+            width: 100%;
+            background: var(--wa-dim);
+            border: 1px solid var(--wa-border);
+            color: var(--wa-green);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp i {
+            font-size: 1.2rem;
+        }
+
+        .btn-whatsapp:hover {
+            background: var(--wa-green);
+            color: #050508;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
+            transform: translateY(-2px);
+        }
+
         .loading-state, .empty-state {
             text-align: center;
             padding: 20px;
@@ -300,129 +340,10 @@
                 <i class="fa-solid fa-crosshairs"></i>
             </div>
             <div class="brand-text">
-                <h1>ELIAX</h1>
-                <div class="sub">MOD V2</div>
+                <h1>ELIAXMOD</h1>
+                <div class="sub">HTN</div>
             </div>
         </div>
         <div class="header-badges">
             <a href="https://github.com/rojitohaxmod/ELIAX-MOD" target="_blank" class="badge">
-                <i class="fa-brands fa-github"></i> GITHUB
-            </a>
-            <div class="badge" style="cursor: default;">
-                PING <span id="ping-val">18ms</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- PANEL CENTRAL CYBERPUNK -->
-    <main>
-        <div class="panel-card">
-            <div class="panel-header">
-                <div class="lock-glow">
-                    <i class="fa-solid fa-download"></i>
-                </div>
-                <h2 class="panel-title">ROJITO MODZ</h2>
-                <p class="panel-sub">Archivos de todas las versiones de GitHub</p>
-            </div>
-
-            <!-- CONTENEDOR DE ARCHIVOS DINÁMICOS -->
-            <div id="downloads-list" class="downloads-container">
-                <div class="loading-state">
-                    <i class="fa-solid fa-circle-notch spinner"></i>
-                    <p>Obteniendo todas las versiones de GitHub...</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- PIE DE PÁGINA -->
-    <footer>
-        ROJITO MODZ © 2026 - GitHub Releases Auto Sync
-    </footer>
-
-    <script>
-        // CONFIGURACIÓN DIRECTA DE TU REPOSITORIO DE GITHUB
-        const GITHUB_USERNAME = "rojitohaxmod";
-        const GITHUB_REPO     = "ELIAX-MOD";
-
-        async function loadGithubFiles() {
-            const container = document.getElementById("downloads-list");
-            // Cambiado de /releases/latest a /releases para obtener TODAS las versiones
-            const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/releases`;
-
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error("No se hallaron Releases o el repositorio es privado");
-                
-                const releases = await response.json();
-
-                if (!releases || releases.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: var(--red-glow); margin-bottom: 10px;"></i>
-                            <p>No hay archivos publicados en Releases aún.</p>
-                        </div>`;
-                    return;
-                }
-
-                container.innerHTML = "";
-                let totalAssetsFound = 0;
-
-                // Recorremos cada release para extraer todos sus archivos adjuntos (assets)
-                releases.forEach(release => {
-                    const tagName = release.tag_name || "Versión";
-                    
-                    if (release.assets && release.assets.length > 0) {
-                        release.assets.forEach(asset => {
-                            totalAssetsFound++;
-                            const sizeMB = (asset.size / (1024 * 1024)).toFixed(2);
-                            const fileItem = document.createElement("div");
-                            fileItem.className = "download-item";
-                            fileItem.innerHTML = `
-                                <div class="file-info">
-                                    <i class="fa-solid fa-file-code file-icon"></i>
-                                    <div class="file-details">
-                                        <span class="file-name" title="${asset.name}">${asset.name}</span>
-                                        <span class="file-meta"><b style="color:var(--red-glow)">[${tagName}]</b> • ${sizeMB} MB • ${asset.download_count} descargas</span>
-                                    </div>
-                                </div>
-                                <a href="${asset.browser_download_url}" class="btn-download" download>
-                                    <i class="fa-solid fa-download"></i> OBTENER
-                                </a>
-                            `;
-                            container.appendChild(fileItem);
-                        });
-                    }
-                });
-
-                if (totalAssetsFound === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: var(--red-glow); margin-bottom: 10px;"></i>
-                            <p>Hay releases creadas, pero ningún archivo adjunto en ellas.</p>
-                        </div>`;
-                }
-
-            } catch (err) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.8rem; color: var(--red-glow); margin-bottom: 8px;"></i>
-                        <p style="color: #fff; font-weight: bold;">Sin Releases activas</p>
-                        <p style="font-size: 0.8rem; margin-top: 5px;">Sube tus archivos en la sección <b>Releases</b> de tu GitHub para que aparezcan aquí automáticamente.</p>
-                    </div>`;
-            }
-        }
-
-        // Variación del Ping para efecto visual
-        setInterval(() => {
-            const pingEl = document.getElementById("ping-val");
-            if (pingEl) {
-                const ping = Math.floor(Math.random() * (24 - 15 + 1)) + 15;
-                pingEl.textContent = ping + "ms";
-            }
-        }, 3000);
-
-        loadGithubFiles();
-    </script>
-</body>
-</html>
+                <i class="fa-brands fa-github">
